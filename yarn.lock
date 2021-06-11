@@ -8782,10 +8782,10 @@ resolve@^1.1.7, resolve@^1.10.0, resolve@^1.13.1, resolve@^1.2.0, resolve@^1.20.
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
-restc@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.npm.taobao.org/restc/download/restc-0.2.2.tgz#cbd3f65fa0bf4347b19e863165053a49a98c3429"
-  integrity sha1-y9P2X6C/Q0exnoYxZQU6SamMNCk=
+restc@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npm.taobao.org/restc/download/restc-0.5.0.tgz#85205f786d1bf628885c55494b60a2458cbfb362"
+  integrity sha1-hSBfeG0b9iiIXFVJS2CiRYy/s2I=
 
 restore-cursor@^2.0.0:
   version "2.0.0"
