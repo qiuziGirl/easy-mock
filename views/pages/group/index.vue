@@ -63,7 +63,7 @@
         <div class="ivu-row">
           <transition-group name="fadeUp">
             <div class="ivu-col ivu-col-span-6"
-                v-for="(item, index) in groups" :key="index">
+                v-for="item in groups" :key="item._id">
               <div
                 class="em-group__item"
                 @click="$router.push(`/group/${item._id}?name=${item.name}`)">

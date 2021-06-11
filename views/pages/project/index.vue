@@ -44,8 +44,9 @@
           <transition-group name="list-complete">
             <div
               class="ivu-col ivu-col-span-6 list-complete-item"
-              v-for="(item, index) in projects"
-              :key="index">
+              v-for="item in projects"
+              :key="item._id"
+            >
               <!-- 检查 user.id 防止闪烁 -->
               <div class="em-project__item"
                 @click="go(item)"
