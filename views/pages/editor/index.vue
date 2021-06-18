@@ -106,7 +106,7 @@ export default {
     }
     next()
   },
-  mounted () {
+  created () {
     this.codeEditor = ace.edit(this.$refs.codeEditor)
     this.codeEditor.getSession().setMode('ace/mode/javascript')
     this.codeEditor.setTheme('ace/theme/monokai')
