@@ -1,11 +1,12 @@
 <template>
   <transition name="fadeUp">
     <div
+      v-show="pageAnimated"
       class="em-add"
       :class="custClass"
       :style="custStyle"
-      v-show="pageAnimated">
-      <Icon :type="icon"></Icon>
+    >
+      <Icon :type="icon" />
     </div>
   </transition>
 </template>

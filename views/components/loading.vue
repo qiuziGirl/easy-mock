@@ -1,22 +1,22 @@
 <template>
-  <div class="em-loading" v-show="show">
-    <Spin size="large" fix></Spin>
+  <div v-show="show" class="em-loading">
+    <Spin size="large" fix />
   </div>
 </template>
 
 <script>
 export default {
   name: 'EmLoading',
+  data () {
+    return {
+      show: false
+    }
+  },
   mounted () {
     document.addEventListener('scroll', this.scroll)
   },
   beforeDestroy () {
     this.destroy()
-  },
-  data () {
-    return {
-      show: false
-    }
   },
   methods: {
     scroll () {

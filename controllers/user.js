@@ -51,7 +51,7 @@ module.exports = class UserController {
       return
     }
 
-    let user = await UserProxy.getByName(name)
+    const user = await UserProxy.getByName(name)
 
     if (user) {
       ctx.body = ctx.util.refail('用户名已被使用')
@@ -84,7 +84,7 @@ module.exports = class UserController {
 
     /* istanbul ignore if */
     if (ldapUtil.enable) {
-      let ldapClient = await ldapUtil.createClient()
+      const ldapClient = await ldapUtil.createClient()
       try {
         verifyPassword = await ldapUtil.authenticate(name, password, ldapClient)
       } catch (error) {

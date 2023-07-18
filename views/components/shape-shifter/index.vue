@@ -1,6 +1,6 @@
 <template>
   <div class="em-shape-shifter">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" />
   </div>
 </template>
 

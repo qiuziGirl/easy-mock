@@ -1,69 +1,76 @@
 <template>
   <div class="em-proj-detail">
     <em-header
+      v-model="pageName"
       icon="cube"
       :title="project.name"
       :description="page.description"
       :nav="nav"
-      v-model="pageName">
-    </em-header>
-    <div v-shortkey="['tab']" @shortkey="handleKeyTab()"></div>
-    <em-keyboard-short v-model="keyboards"></em-keyboard-short>
+    />
+    <div v-shortkey="['tab']" @shortkey="handleKeyTab()" />
+    <em-keyboard-short v-model="keyboards" />
     <Back-top>
-      <em-add icon="arrow-up-c" :bottom="90"></em-add>
+      <em-add icon="arrow-up-c" :bottom="90" />
     </Back-top>
     <transition name="fade" mode="out-in">
-      <project v-if="pageName === $t('p.detail.nav[1]')" key="a" :project-data="project"></project>
+      <project v-if="pageName === $t('p.detail.nav[1]')" key="a" :project-data="project" />
       <div
-        class="em-container"
         v-if="pageAnimated && pageName === $t('p.detail.nav[0]')"
-        key="b">
+        key="b"
+        class="em-container"
+      >
         <div class="em-proj-detail__info">
           <Row>
             <Col span="19">
-              <em-spots :size="6"></em-spots>
-              {{project.description}}
+              <em-spots :size="6" />
+              {{ project.description }}
               <p class="tag">
                 <span>Base URL</span>
-                {{baseUrl}}
+                {{ baseUrl }}
               </p>
               <p class="tag">
                 <span>Project ID</span>
-                {{project._id}}
+                {{ project._id }}
               </p>
             </Col>
             <Col span="5">
               <div>
-                <img :src="group ? '/public/images/group-default.png' : project.user.head_img" />
-                <p class="author">{{group ? group.name : project.user.nick_name}}</p>
+                <img :src="group ? '/public/images/group-default.png' : project.user.head_img">
+                <p class="author">
+                  {{ group ? group.name : project.user.nick_name }}
+                </p>
               </div>
             </Col>
           </Row>
         </div>
         <div class="em-proj-detail__switcher">
           <ul>
-            <li @click="openEditor()" v-shortkey="['ctrl', 'n']" @shortkey="openEditor()">
-              <Icon type="plus-round"></Icon> {{$t('p.detail.create.action')}}
+            <li v-shortkey="['ctrl', 'n']" @click="openEditor()" @shortkey="openEditor()">
+              <Icon type="plus-round" /> {{ $t('p.detail.create.action') }}
             </li>
-            <li @click="handleWorkbench" v-shortkey="['ctrl', 'w']" @shortkey="handleWorkbench">
+            <li v-shortkey="['ctrl', 'w']" @click="handleWorkbench" @shortkey="handleWorkbench">
               <transition name="zoom" mode="out-in">
-                <Icon :type="project.extend.is_workbench ? 'android-star' : 'android-star-outline'"
-                  :key="project.extend.is_workbench"></Icon>
+                <Icon
+                  :key="project.extend.is_workbench"
+                  :type="project.extend.is_workbench ? 'android-star' : 'android-star-outline'"
+                />
               </transition>
-              {{$t('p.detail.workbench')}}
+              {{ $t('p.detail.workbench') }}
             </li>
-            <li @click="updateBySwagger" v-shortkey="['ctrl', 's']" @shortkey="updateBySwagger">
-              <Icon type="loop"></Icon> {{$t('p.detail.syncSwagger.action')}}
+            <li v-shortkey="['ctrl', 's']" @click="updateBySwagger" @shortkey="updateBySwagger">
+              <Icon type="loop" /> {{ $t('p.detail.syncSwagger.action') }}
             </li>
-            <li @click="download"><Icon type="code-download"></Icon> {{$tc('p.detail.download', 1)}}</li>
+            <li @click="download">
+              <Icon type="code-download" /> {{ $tc('p.detail.download', 1) }}
+            </li>
           </ul>
         </div>
-        <div class="em-proj-detail__members" v-if="project.members.length">
-          <em-spots :size="6"></em-spots>
-          <h2><Icon type="person-stalker"></Icon> {{$t('p.detail.member')}}</h2>
+        <div v-if="project.members.length" class="em-proj-detail__members">
+          <em-spots :size="6" />
+          <h2><Icon type="person-stalker" /> {{ $t('p.detail.member') }}</h2>
           <Row :gutter="20">
-            <Col span="2" v-for="(item, index) in project.members" :key="index">
-              <img :src="item.head_img" :title="item.nick_name"/>
+            <Col v-for="(item, index) in project.members" :key="index" span="2">
+              <img :src="item.head_img" :title="item.nick_name">
             </Col>
           </Row>
         </div>
@@ -71,8 +78,9 @@
           border
           :columns="columns"
           :data="list"
+          :highlight-row="true"
           @on-selection-change="selectionChange"
-          :highlight-row="true"></Table>
+        />
       </div>
     </transition>
   </div>
@@ -91,7 +99,14 @@ import Project from '../new/project'
 import MockExpand from './mock-expand'
 
 export default {
-  name: 'projectDetail',
+  name: 'ProjectDetail',
+  components: {
+    Project
+  },
+  asyncData ({ store, route }) {
+    store.commit('mock/INIT_REQUEST')
+    return store.dispatch('mock/FETCH', route)
+  },
   data () {
     return {
       pageName: this.$t('p.detail.nav[0]'),
@@ -190,15 +205,6 @@ export default {
       ]
     }
   },
-  asyncData ({ store, route }) {
-    store.commit('mock/INIT_REQUEST')
-    return store.dispatch('mock/FETCH', route)
-  },
-  mounted () {
-    this.$on('query', debounce((keywords) => {
-      this.keywords = keywords
-    }, 500))
-  },
   computed: {
     project () {
       return this.$store.state.mock.project
@@ -226,6 +232,11 @@ export default {
     group () {
       return this.project.group
     }
+  },
+  mounted () {
+    this.$on('query', debounce((keywords) => {
+      this.keywords = keywords
+    }, 500))
   },
   methods: {
     handleKeyTab () {
@@ -288,7 +299,7 @@ export default {
               } else {
                 this.$Message.success(this.$t('p.detail.syncSwagger.success'))
               }
-              this.$store.commit('mock/SET_REQUEST_PARAMS', {pageIndex: 1})
+              this.$store.commit('mock/SET_REQUEST_PARAMS', { pageIndex: 1 })
               this.$store.dispatch('mock/FETCH', this.$route)
             }
             return res
@@ -332,15 +343,12 @@ export default {
     },
     openEditor (mock) {
       if (mock) {
-        this.$store.commit('mock/SET_EDITOR_DATA', {mock, baseUrl: this.baseUrl})
+        this.$store.commit('mock/SET_EDITOR_DATA', { mock, baseUrl: this.baseUrl })
         this.$router.push(`/editor/${this.project._id}/${mock._id}`)
       } else {
         this.$router.push(`/editor/${this.project._id}`)
       }
     }
-  },
-  components: {
-    Project
   }
 }
 </script>

@@ -418,8 +418,8 @@ describe('test/controllers/project.test.js', () => {
 
     test('同步失败', async () => {
       let res = await request('/api/project', 'get')
-      let apiRes = await request('/api/mock').query({ project_id: res.body.data[1]._id })
-      let api = apiRes.body.data.mocks.filter(api => api.url === '/v2/user/logout')[0]
+      const apiRes = await request('/api/mock').query({ project_id: res.body.data[1]._id })
+      const api = apiRes.body.data.mocks.filter(api => api.url === '/v2/user/logout')[0]
       await request('/api/mock/update', 'post').send({
         id: api._id,
         url: '/v2/user/logout',

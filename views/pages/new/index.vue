@@ -1,11 +1,12 @@
 <template>
   <div class="em-new">
-    <em-header icon="plus-round"
+    <em-header
+      icon="plus-round"
       :title="$t('p.new.header.title')"
-      :description="$t('p.new.header.description')">
-    </em-header>
-    <em-keyboard-short></em-keyboard-short>
-    <project></project>
+      :description="$t('p.new.header.description')"
+    />
+    <em-keyboard-short />
+    <project />
   </div>
 </template>
 
@@ -17,7 +18,7 @@
 import Project from './project'
 
 export default {
-  name: 'new',
+  name: 'New',
   components: { Project }
 }
 </script>

@@ -1,59 +1,95 @@
 <template>
   <div class="em-index">
     <transition name="zoom">
-      <div class="em-index__login" v-if="page === 0">
+      <div v-if="page === 0" class="em-index__login">
         <img src="/public/images/easy-mock.png">
-        <p>{{$tc('p.login.description', 1)}}</p>
-        <p>{{$tc('p.login.description', 2)}}</p>
+        <p>{{ $tc('p.login.description', 1) }}</p>
+        <p>{{ $tc('p.login.description', 2) }}</p>
         <transition name="fadeUp" mode="out-in">
-          <i-button type="primary" long @click.stop="start" v-if="!isLogin" key="start">{{$tc('p.login.form.button', 1)}}</i-button>
-          <i-button type="success" long @click.stop="login" v-else key="login">{{$tc('p.login.form.button', 2)}}</i-button>
+          <i-button
+            v-if="!isLogin"
+            key="start"
+            type="primary"
+            long
+            @click.stop="start"
+          >
+            {{ $tc('p.login.form.button', 1) }}
+          </i-button>
+          <i-button
+            v-else
+            key="login"
+            type="success"
+            long
+            @click.stop="login"
+          >
+            {{ $tc('p.login.form.button', 2) }}
+          </i-button>
         </transition>
         <transition name="fadeLeft">
           <div v-show="isLogin" v-click-outside="onClickOutside">
-            <i-input size="large"
+            <i-input
               v-if="ldap"
+              ref="user"
+              v-model="userName"
+              size="large"
               :placeholder="$tc('p.login.form.placeholder', 2)"
-              ref="user" v-model="userName" @on-enter="login"></i-input>
-            <i-input size="large"
+              @on-enter="login"
+            />
+            <i-input
               v-if="!ldap"
+              ref="user"
+              v-model="userName"
+              size="large"
               :placeholder="$tc('p.login.form.placeholder', 1)"
-              ref="user" v-model="userName" @on-enter="login"></i-input>
-            <i-input size="large"
+              @on-enter="login"
+            />
+            <i-input
+              v-model="password"
+              size="large"
               :placeholder="$t('p.login.form.password')"
-              type="password" v-model="password" @on-enter="login"></i-input>
+              type="password"
+              @on-enter="login"
+            />
           </div>
         </transition>
       </div>
     </transition>
 
-    <div class="em-index__section em-index__section--login" style="z-index: 6"
-      :class="{'is-old': page > 0}">
+    <div
+      class="em-index__section em-index__section--login"
+      style="z-index: 6"
+      :class="{'is-old': page > 0}"
+    >
       <transition name="fade">
         <div
+          v-show="wallpaperVisible"
+          ref="wallpaper"
           class="fullscreen"
           :class="{'is-login': isLogin}"
-          ref="wallpaper"
-          v-show="wallpaperVisible"></div>
+        />
       </transition>
       <div class="links">
-        <router-link to="/docs" class="link">Document</router-link>
+        <router-link to="/docs" class="link">
+          Document
+        </router-link>
         <a href="https://github.com/easy-mock/easy-mock-cli" target="_blank" class="link">CLI</a>
         <a href="https://github.com/easy-mock/easy-mock" target="_blank" class="link">GitHub</a>
-        <p v-if="copyright">{{copyright}}</p>
+        <p v-if="copyright">
+          {{ copyright }}
+        </p>
       </div>
       <transition name="fade">
-        <div class="fullscreen-by" v-if="wallpaperCopyright">
+        <div v-if="wallpaperCopyright" class="fullscreen-by">
           <div v-if="wallpaperCopyright.name === 'Bing'">
             Photo by
             <a :href="wallpaperCopyright.link" target="_blank">
-              <strong>{{wallpaperCopyright.name}}</strong>
+              <strong>{{ wallpaperCopyright.name }}</strong>
             </a>
           </div>
           <div v-else>
             Photo by
             <a :href="wallpaperCopyright.link" target="_blank">
-              <strong>{{wallpaperCopyright.name}}</strong>
+              <strong>{{ wallpaperCopyright.name }}</strong>
             </a>
             <strong> / </strong>
             <a href="https://unsplash.com" target="_blank">
@@ -65,25 +101,32 @@
           </div>
         </div>
       </transition>
-      <div class="about-btn" @click="page = 1">{{$tc('p.login.about', 1)}}</div>
+      <div class="about-btn" @click="page = 1">
+        {{ $tc('p.login.about', 1) }}
+      </div>
     </div>
 
-    <div class="em-index__section section-about" style="z-index: 5"
-      :class="{'is-old': page > 1}">
-      <em-shape-shifter v-if="page === 1"></em-shape-shifter>
+    <div
+      class="em-index__section section-about"
+      style="z-index: 5"
+      :class="{'is-old': page > 1}"
+    >
+      <em-shape-shifter v-if="page === 1" />
       <div class="feature-list">
         <transition-group name="fadeDown">
           <div
-            class="section-title"
+            v-show="featureVisible"
             key="a"
-            v-show="featureVisible">
+            class="section-title"
+          >
             Easy Mock
           </div>
           <div
-            class="section-description"
+            v-show="featureVisible"
             key="b"
-            v-show="featureVisible">
-            {{$tc('p.login.about', 2)}}
+            class="section-description"
+          >
+            {{ $tc('p.login.about', 2) }}
           </div>
         </transition-group>
         <Row :gutter="100">
@@ -93,8 +136,8 @@
                 <div class="feature-icon">
                   <img src="/public/images/icon-swagger.png" style="margin-left: 1px;">
                 </div>
-                <h2>{{$tc('p.login.feature[0]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[0]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[0]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[0]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -104,8 +147,8 @@
                 <div class="feature-icon">
                   <img src="/public/images/icon-mock.png" style="margin-left: 1px;">
                 </div>
-                <h2>{{$tc('p.login.feature[1]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[1]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[1]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[1]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -115,8 +158,8 @@
                 <div class="feature-icon">
                   <img src="/public/images/icon-command.png">
                 </div>
-                <h2>{{$tc('p.login.feature[2]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[2]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[2]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[2]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -126,10 +169,10 @@
             <transition name="zoom">
               <div v-show="featureVisible">
                 <div class="feature-icon">
-                  <Icon type="ios-book"></Icon>
+                  <Icon type="ios-book" />
                 </div>
-                <h2>{{$tc('p.login.feature[3]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[3]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[3]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[3]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -137,10 +180,10 @@
             <transition name="zoom">
               <div v-show="featureVisible">
                 <div class="feature-icon">
-                  <Icon type="ribbon-b"></Icon>
+                  <Icon type="ribbon-b" />
                 </div>
-                <h2>{{$tc('p.login.feature[4]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[4]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[4]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[4]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -148,10 +191,10 @@
             <transition name="zoom">
               <div v-show="featureVisible">
                 <div class="feature-icon">
-                  <Icon type="lightbulb"></Icon>
+                  <Icon type="lightbulb" />
                 </div>
-                <h2>{{$tc('p.login.feature[5]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[5]', 2)}}</p>
+                <h2>{{ $tc('p.login.feature[5]', 1) }}</h2>
+                <p>{{ $tc('p.login.feature[5]', 2) }}</p>
               </div>
             </transition>
           </i-col>
@@ -160,8 +203,8 @@
     </div>
 
     <div class="em-index__pagination">
-      <div class="dot" :class="{'active': page === 0}" @click="page = 0"></div>
-      <div class="dot" :class="{'active': page === 1}" @click="page = 1"></div>
+      <div class="dot" :class="{'active': page === 0}" @click="page = 0" />
+      <div class="dot" :class="{'active': page === 1}" @click="page = 1" />
     </div>
   </div>
 </template>
@@ -177,7 +220,10 @@ import * as api from '../../api'
 let resizeTimer
 
 export default {
-  name: 'index',
+  name: 'Index',
+  asyncData ({ store }) {
+    return store.dispatch('wallpaper/FETCH')
+  },
   data () {
     return {
       ldap: config.ldap,
@@ -188,21 +234,6 @@ export default {
       copyright: config.copyright,
       featureVisible: false,
       wallpaperVisible: false
-    }
-  },
-  asyncData ({ store }) {
-    return store.dispatch('wallpaper/FETCH')
-  },
-  mounted () {
-    const img = new Image()
-    img.src = this.$store.state.wallpaper.url
-    img.onload = () => {
-      this.wallpaperVisible = true
-      this.$nextTick(() => {
-        this.$refs.wallpaper.style.background = `url(${img.src})`
-        this.$refs.wallpaper.style.backgroundSize = 'cover'
-        this.$refs.wallpaper.style.backgroundPosition = '50% 50%'
-      })
     }
   },
   computed: {
@@ -220,6 +251,18 @@ export default {
       } else {
         this.featureVisible = false
       }
+    }
+  },
+  mounted () {
+    const img = new Image()
+    img.src = this.$store.state.wallpaper.url
+    img.onload = () => {
+      this.wallpaperVisible = true
+      this.$nextTick(() => {
+        this.$refs.wallpaper.style.background = `url(${img.src})`
+        this.$refs.wallpaper.style.backgroundSize = 'cover'
+        this.$refs.wallpaper.style.backgroundPosition = '50% 50%'
+      })
     }
   },
   methods: {

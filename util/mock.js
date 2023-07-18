@@ -2,28 +2,28 @@
 
 const example = {
   base: JSON.stringify({
-    'success': true,
-    'data': [{
-      'user': {
-        'name': '演示用'
+    success: true,
+    data: [{
+      user: {
+        name: '演示用'
       }
     }]
   }),
   random: JSON.stringify({
-    'success': true,
-    'data': {
+    success: true,
+    data: {
       'projects|3-10': [{
-        'name': '演示用',
-        'url': '@url',
-        'email': '@email',
-        'address': '@county(true)',
+        name: '演示用',
+        url: '@url',
+        email: '@email',
+        address: '@county(true)',
         'string|1-10': '★',
         'number|1-100': 100,
         'boolean|1-2': true,
         'object|2': {
-          '310000': '上海市',
-          '320000': '江苏省',
-          '330000': '浙江省'
+          310000: '上海市',
+          320000: '江苏省',
+          330000: '浙江省'
         }
       }]
     }

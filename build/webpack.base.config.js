@@ -27,9 +27,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json', '.md'],
     alias: {
-      'pages': resolve('../views/pages'),
-      'components': resolve('../views/components'),
-      'config': resolve('../views/config.json')
+      pages: resolve('../views/pages'),
+      components: resolve('../views/components'),
+      config: resolve('../views/config.json')
     }
   },
   module: {

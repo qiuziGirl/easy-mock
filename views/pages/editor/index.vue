@@ -1,17 +1,19 @@
 <template>
   <div class="em-editor">
     <div class="em-editor__editor">
-      <div ref="codeEditor"></div>
+      <div ref="codeEditor" />
     </div>
     <div class="panel-info">
-      <em-spots :size="10"></em-spots>
+      <em-spots :size="10" />
       <div class="wrapper">
-        <h2>{{isEdit ? $t('p.detail.editor.title[0]') : $t('p.detail.editor.title[1]')}}</h2>
+        <h2>{{ isEdit ? $t('p.detail.editor.title[0]') : $t('p.detail.editor.title[1]') }}</h2>
         <div class="em-editor__form">
           <Form label-position="top">
             <Form-item label="Method">
               <i-select v-model="temp.method">
-                <Option v-for="item in methods" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                <Option v-for="item in methods" :key="item.value" :value="item.value">
+                  {{ item.label }}
+                </Option>
               </i-select>
             </Form-item>
             <Form-item label="URL">
@@ -20,22 +22,30 @@
               </i-input>
             </Form-item>
             <Form-item :label="$t('p.detail.columns[0]')">
-              <i-input v-model="temp.description"></i-input>
+              <i-input v-model="temp.description" />
             </Form-item>
-            <Form-item :label="$t('p.detail.editor.autoClose')" v-if="isEdit">
-              <i-switch v-model="autoClose"></i-switch>
+            <Form-item v-if="isEdit" :label="$t('p.detail.editor.autoClose')">
+              <i-switch v-model="autoClose" />
             </Form-item>
             <Form-item>
-              <Button type="primary" long @click="submit">{{isEdit ? $t('p.detail.editor.action[0]') : $t('p.detail.editor.action[1]')}}</Button>
+              <Button type="primary" long @click="submit">
+                {{ isEdit ? $t('p.detail.editor.action[0]') : $t('p.detail.editor.action[1]') }}
+              </Button>
             </Form-item>
           </Form>
         </div>
         <div class="em-editor__control">
           <div class="em-proj-detail__switcher">
             <ul>
-              <li @click="format">{{$t('p.detail.editor.control[0]')}}</li>
-              <li @click="preview" v-if="isEdit">{{$t('p.detail.editor.control[1]')}}</li>
-              <li @click="close">{{$t('p.detail.editor.control[2]')}}</li>
+              <li @click="format">
+                {{ $t('p.detail.editor.control[0]') }}
+              </li>
+              <li v-if="isEdit" @click="preview">
+                {{ $t('p.detail.editor.control[1]') }}
+              </li>
+              <li @click="close">
+                {{ $t('p.detail.editor.control[2]') }}
+              </li>
             </ul>
           </div>
         </div>
@@ -63,7 +73,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default {
-  name: 'editor',
+  name: 'Editor',
   data () {
     return {
       codeEditor: null,
@@ -119,7 +129,7 @@ export default {
     this.codeEditor.on('change', this.onChange)
     this.codeEditor.commands.addCommand({
       name: 'save',
-      bindKey: {win: 'Ctrl-S', mac: 'Command-S'},
+      bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
       exec: () => {
         this.submit()
       }
@@ -147,7 +157,7 @@ export default {
     },
     format () {
       const context = this.codeEditor.getValue()
-      let code = /^http(s)?/.test(context)
+      const code = /^http(s)?/.test(context)
         ? context
         : jsBeautify.js_beautify(context, { indent_size: 2 })
       this.codeEditor.setValue(code)
@@ -156,7 +166,7 @@ export default {
       this.temp.mode = this.codeEditor.getValue()
     },
     close () {
-      this.$store.commit('mock/SET_EDITOR_DATA', {mock: null, baseUrl: ''})
+      this.$store.commit('mock/SET_EDITOR_DATA', { mock: null, baseUrl: '' })
       this.$router.replace(`/project/${this.projectId}`)
     },
     submit () {

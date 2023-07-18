@@ -1,7 +1,8 @@
 <template>
   <transition name="fade">
     <div class="em-spots" v-show="pageAnimated">
-      <span class="decorate"
+      <span
+class="decorate"
         v-for="(item, index) in items"
         :key="index"
         :style="item">

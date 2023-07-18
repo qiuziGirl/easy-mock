@@ -28,7 +28,7 @@ module.exports = class DashboardController {
     let result = cache.get('list')
     const query = {
       create_at: {
-        '$gte': new Date(moment().format('YYYY-MM-DD'))
+        $gte: new Date(moment().format('YYYY-MM-DD'))
       }
     }
 

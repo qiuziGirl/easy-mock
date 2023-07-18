@@ -1,8 +1,8 @@
 <template>
   <div class="em-placeholder">
     <transition name="fade">
-      <div class="em-placeholder__content" v-show="visible">
-        <slot></slot>
+      <div v-show="visible" class="em-placeholder__content">
+        <slot />
       </div>
     </transition>
   </div>
@@ -26,11 +26,11 @@ export default {
       visible: false
     }
   },
-  mounted () {
-    this.handleVisible()
-  },
   watch: {
     show: 'handleVisible'
+  },
+  mounted () {
+    this.handleVisible()
   },
   methods: {
     handleVisible () {

@@ -5,7 +5,7 @@
  */
 'use strict'
 
-let S = module.exports = {
+const S = module.exports = {
   init: function (ele, text) {
     S.Drawing.init(ele)
     S.ShapeBuilder.init()
@@ -22,7 +22,7 @@ S.Drawing = (function () {
   let canvas
   let context
   let renderFn
-  let requestFrame = window.requestAnimationFrame ||
+  const requestFrame = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       window.mozRequestAnimationFrame ||
       window.oRequestAnimationFrame ||
@@ -98,12 +98,12 @@ S.UI = (function () {
   let currentAction
   let resizeTimer
   let time
-  let maxShapeSize = 30
+  const maxShapeSize = 30
   let sequence = []
-  let cmd = '#'
+  const cmd = '#'
 
   function formatTime (date) {
-    let h = date.getHours()
+    const h = date.getHours()
     let m = date.getMinutes()
 
     m = m < 10 ? '0' + m : m
@@ -280,11 +280,11 @@ S.Dot.prototype = {
   },
 
   _moveTowards: function (n) {
-    let details = this.distanceTo(n, true)
-    let dx = details[0]
-    let dy = details[1]
-    let d = details[2]
-    let e = this.e * d
+    const details = this.distanceTo(n, true)
+    const dx = details[0]
+    const dy = details[1]
+    const d = details[2]
+    const e = this.e * d
 
     if (this.p.h === -1) {
       this.p.x = n.x
@@ -339,9 +339,9 @@ S.Dot.prototype = {
   },
 
   distanceTo: function (n, details) {
-    let dx = this.p.x - n.x
-    let dy = this.p.y - n.y
-    let d = Math.sqrt(dx * dx + dy * dy)
+    const dx = this.p.x - n.x
+    const dy = this.p.y - n.y
+    const d = Math.sqrt(dx * dx + dy * dy)
 
     return details ? [dx, dy, d] : d
   },
@@ -359,11 +359,11 @@ S.Dot.prototype = {
 }
 
 S.ShapeBuilder = (function () {
-  let gap = 13
-  let shapeCanvas = document.createElement('canvas')
-  let shapeContext = shapeCanvas.getContext('2d')
-  let fontSize = 500
-  let fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif'
+  const gap = 13
+  const shapeCanvas = document.createElement('canvas')
+  const shapeContext = shapeCanvas.getContext('2d')
+  const fontSize = 500
+  const fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif'
 
   function fit () {
     shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap
@@ -374,8 +374,8 @@ S.ShapeBuilder = (function () {
   }
 
   function processCanvas () {
-    let pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data
-    let dots = []
+    const pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data
+    const dots = []
     let x = 0
     let y = 0
     let fx = shapeCanvas.width
@@ -423,8 +423,8 @@ S.ShapeBuilder = (function () {
     },
 
     imageFile: function (url, callback) {
-      let image = new Image()
-      let a = S.Drawing.getArea()
+      const image = new Image()
+      const a = S.Drawing.getArea()
 
       image.onload = function () {
         shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height)
@@ -440,7 +440,7 @@ S.ShapeBuilder = (function () {
     },
 
     circle: function (d) {
-      let r = Math.max(0, d) / 2
+      const r = Math.max(0, d) / 2
       shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height)
       shapeContext.beginPath()
       shapeContext.arc(r * gap, r * gap, r * gap, 0, 2 * Math.PI, false)
@@ -466,9 +466,9 @@ S.ShapeBuilder = (function () {
     },
 
     rectangle: function (w, h) {
-      let dots = []
-      let width = gap * w
-      let height = gap * h
+      const dots = []
+      const width = gap * w
+      const height = gap * h
 
       for (let y = 0; y < height; y += gap) {
         for (let x = 0; x < width; x += gap) {
@@ -485,14 +485,14 @@ S.ShapeBuilder = (function () {
 }())
 
 S.Shape = (function () {
-  let dots = []
+  const dots = []
   let width = 0
   let height = 0
   let cx = 0
   let cy = 0
 
   function compensate () {
-    let a = S.Drawing.getArea()
+    const a = S.Drawing.getArea()
 
     cx = a.w / 2 - width / 2
     cy = a.h / 2 - height / 2
@@ -500,7 +500,7 @@ S.Shape = (function () {
 
   return {
     shuffleIdle: function () {
-      let a = S.Drawing.getArea()
+      const a = S.Drawing.getArea()
 
       for (let d = 0; d < dots.length; d++) {
         if (!dots[d].s) {
@@ -514,7 +514,7 @@ S.Shape = (function () {
 
     switchShape: function (n, fast) {
       let size
-      let a = S.Drawing.getArea()
+      const a = S.Drawing.getArea()
       let d = 0
       let i = 0
 

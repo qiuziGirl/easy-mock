@@ -51,7 +51,7 @@ server.listen(1389)
 
 describe('test/util/ldap.test.js', () => {
   test('connection', async () => {
-    let ldapClient = await ldapUtil.createClient()
+    const ldapClient = await ldapUtil.createClient()
     try {
       await ldapUtil.authenticate('demo@example.com', '123456', ldapClient)
     } catch (error) {
@@ -63,7 +63,7 @@ describe('test/util/ldap.test.js', () => {
 
   test('authenticate', (done) => {
     setTimeout(async () => {
-      let ldapClient = await ldapUtil.createClient()
+      const ldapClient = await ldapUtil.createClient()
       const user = await ldapUtil.authenticate('demo@example.com', '123456', ldapClient)
       expect(user).toBeTruthy()
       try {

@@ -25,7 +25,7 @@ export default {
     }
   },
   actions: {
-    FETCH ({commit, state, rootState}, route) {
+    FETCH ({ commit, state }, route) {
       return api.mock.getList({
         params: {
           project_id: route.params.id,
@@ -42,7 +42,7 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {route, mode, description, url, method}) {
+    CREATE ({ commit, dispatch }, { route, mode, description, url, method }) {
       return api.mock.create({
         data: {
           mode,
@@ -53,7 +53,7 @@ export default {
         }
       }).then((res) => {
         if (res.data.success) {
-          commit('SET_REQUEST_PARAMS', {pageIndex: 1})
+          commit('SET_REQUEST_PARAMS', { pageIndex: 1 })
           dispatch('FETCH', route)
         }
         return res

@@ -1,59 +1,72 @@
 <template>
   <transition name="fade">
-    <div class="em-container" v-show="pageAnimated">
+    <div v-show="pageAnimated" class="em-container">
       <div class="em-new__content">
-        <Form label-position="top" :model="form" ref="formValidate">
+        <Form ref="formValidate" label-position="top" :model="form">
           <Form-item
-            :label="$tc('p.new.form.name', 1)">
+            :label="$tc('p.new.form.name', 1)"
+          >
             <template slot="label">
-              {{$tc('p.new.form.name', 1)}}
+              {{ $tc('p.new.form.name', 1) }}
               <Tooltip :content="$tc('p.new.form.name', 2)">
-                <Icon type="help-circled"></Icon>
+                <Icon type="help-circled" />
               </Tooltip>
             </template>
             <Row>
               <Col span="7">
                 <Form-item>
                   <i-select v-model="form.groupId" :disabled="isEdit">
-                    <Option v-for="item in groups" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <Option v-for="item in groups" :key="item.value" :value="item.value">
+                      {{ item.label }}
+                    </Option>
                   </i-select>
                 </Form-item>
               </Col>
-              <Col span="1" style="text-align: center">/</Col>
+              <Col span="1" style="text-align: center">
+                /
+              </Col>
               <Col span="16">
                 <Form-item>
-                  <i-input v-model="form.projectName" placeholder="example" ref="projectName"></i-input>
+                  <i-input ref="projectName" v-model="form.projectName" placeholder="example" />
                 </Form-item>
               </Col>
             </Row>
           </Form-item>
           <Form-item
-            :label="$tc('p.new.form.url', 1)">
+            :label="$tc('p.new.form.url', 1)"
+          >
             <template slot="label">
-              {{$tc('p.new.form.url', 1)}}
+              {{ $tc('p.new.form.url', 1) }}
               <Tooltip :content="$tc('p.new.form.url', 2)">
-                <Icon type="help-circled"></Icon>
+                <Icon type="help-circled" />
               </Tooltip>
             </template>
             <i-input v-model="projectUrl" placeholder="example">
               <span slot="prepend">/</span>
             </i-input>
           </Form-item>
-          <Form-item :label="$tc('p.new.form.description', 1)"  class="em-new__form-hr">
-            <i-input v-model="form.projectDesc"
-              :placeholder="$tc('p.new.form.description', 2)"></i-input>
+          <Form-item :label="$tc('p.new.form.description', 1)" class="em-new__form-hr">
+            <i-input
+              v-model="form.projectDesc"
+              :placeholder="$tc('p.new.form.description', 2)"
+            />
           </Form-item>
           <Form-item :label="$tc('p.new.form.swagger', 0)">
             <template slot="label">
-              {{$tc('p.new.form.swagger', 0)}}
-              <span>({{$tc('p.new.form.swagger', 1)}})</span>
+              {{ $tc('p.new.form.swagger', 0) }}
+              <span>({{ $tc('p.new.form.swagger', 1) }})</span>
             </template>
             <i-select v-model="swaggerType" class="em-new__swagger-type">
-              <Option value="URL">URL</Option>
-              <Option value="Upload">Upload</Option>
+              <Option value="URL">
+                URL
+              </Option>
+              <Option value="Upload">
+                Upload
+              </Option>
             </i-select>
-            <i-input v-if="swaggerType === 'URL'" v-model="form.projectSwagger" placeholder="http://example.com/swagger.json"></i-input>
+            <i-input v-if="swaggerType === 'URL'" v-model="form.projectSwagger" placeholder="http://example.com/swagger.json" />
             <Upload
+              v-if="swaggerType === 'Upload'"
               type="drag"
               :headers="uploadHeaders"
               :show-upload-list="false"
@@ -61,20 +74,22 @@
               :action="uploadAPI"
               :on-success="handleSwaggerUploadSuccess"
               :on-format-error="handleSwaggerUploadError"
-              v-if="swaggerType === 'Upload'">
+            >
               <div style="padding: 20px 0">
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" />
                 <p>JSON / YAML</p>
               </div>
             </Upload>
             <p class="em-new__form-description">
-            {{$tc('p.new.form.swagger', 2)}} <router-link to="/docs#swagger"><Icon type="help-circled"></Icon></router-link>
+              {{ $tc('p.new.form.swagger', 2) }} <router-link to="/docs#swagger">
+                <Icon type="help-circled" />
+              </router-link>
             </p>
           </Form-item>
           <Form-item :label="$t('p.new.form.member[0]')" class="em-new__form-hr">
             <template slot="label">
-              {{$t('p.new.form.member[0]')}}
-              <span>({{isGroup ? $tc('p.new.form.member[1]', 2) : $tc('p.new.form.member[1]', 1)}})</span>
+              {{ $t('p.new.form.member[0]') }}
+              <span>({{ isGroup ? $tc('p.new.form.member[1]', 2) : $tc('p.new.form.member[1]', 1) }})</span>
             </template>
             <i-select
               v-model="form.projectMembers"
@@ -84,25 +99,40 @@
               :disabled="isGroup"
               :placeholder="$t('p.new.form.member[2]')"
               :remote-method="remote"
-              :loading="remoteLoading">
-              <Option v-for="option in users"
+              :loading="remoteLoading"
+            >
+              <Option
+                v-for="option in users"
+                :key="option.value"
                 :value="option.value"
-                :key="option.value">{{option.label}}</Option>
+              >
+                {{ option.label }}
+              </Option>
             </i-select>
           </Form-item>
           <Form-item :class="{'em-new__form-hr': isEdit}">
-            <Button type="primary" long @click="submit">{{isEdit ? $t('p.new.form.button.update') : $t('p.new.form.button.create')}}</Button>
+            <Button type="primary" long @click="submit">
+              {{ isEdit ? $t('p.new.form.button.update') : $t('p.new.form.button.create') }}
+            </Button>
           </Form-item>
-          <Form-item :label="$tc('p.new.form.confirm', 0)" v-if="isEdit">
-            <i-input v-model="confirmName" :placeholder="$tc('p.new.form.confirm', 1)"></i-input>
+          <Form-item v-if="isEdit" :label="$tc('p.new.form.confirm', 0)">
+            <i-input v-model="confirmName" :placeholder="$tc('p.new.form.confirm', 1)" />
             <p class="em-new__form-description">
-            {{$tc('p.new.form.confirm', 2)}} <strong style="word-break:break-all;">
-              {{(projectData.user && projectData.user.nick_name) || (projectData.group && projectData.group.name) }} / {{projectData.name}}
-            </strong>
+              {{ $tc('p.new.form.confirm', 2) }}
+              <strong style="word-break:break-all;">
+                {{ (projectData.user && projectData.user.nick_name) || (projectData.group && projectData.group.name) }} / {{ projectData.name }}
+              </strong>
             </p>
           </Form-item>
           <Form-item v-if="isEdit">
-            <Button type="error" long @click="remove" :disabled="confirmName !== projectData.name">{{$t('p.new.form.button.delete')}}</Button>
+            <Button
+              type="error"
+              long
+              :disabled="confirmName !== projectData.name"
+              @click="remove"
+            >
+              {{ $t('p.new.form.button.delete') }}
+            </Button>
           </Form-item>
         </Form>
       </div>
@@ -118,7 +148,10 @@
 import * as api from '../../api'
 
 export default {
-  name: 'newProject',
+  name: 'NewProject',
+  props: {
+    projectData: null
+  },
   data () {
     return {
       uploadAPI: '/api/upload',
@@ -139,8 +172,25 @@ export default {
       }
     }
   },
-  props: {
-    projectData: null
+  computed: {
+    user () {
+      return this.$store.state.user
+    },
+    isEdit () {
+      return !!this.projectData
+    },
+    isGroup () {
+      if (this.projectData) {
+        return !!this.projectData.group
+      } else {
+        return this.form.groupId !== this.user.id
+      }
+    },
+    uploadHeaders () {
+      return {
+        Authorization: 'Bearer ' + this.user.token
+      }
+    }
   },
   mounted () {
     const proj = this.projectData
@@ -177,26 +227,6 @@ export default {
       })
     }
   },
-  computed: {
-    user () {
-      return this.$store.state.user
-    },
-    isEdit () {
-      return !!this.projectData
-    },
-    isGroup () {
-      if (this.projectData) {
-        return !!this.projectData.group
-      } else {
-        return this.form.groupId !== this.user.id
-      }
-    },
-    uploadHeaders () {
-      return {
-        Authorization: 'Bearer ' + this.user.token
-      }
-    }
-  },
   methods: {
     handleSwaggerUploadSuccess (response) {
       const data = response.data
@@ -204,7 +234,7 @@ export default {
       this.swaggerType = 'URL'
       if (data.expire && data.expire !== -1) {
         this.$Message.success({
-          content: this.$tc('p.new.uploadSuccess', 2, {date: data.expire}),
+          content: this.$tc('p.new.uploadSuccess', 2, { date: data.expire }),
           duration: 5
         })
       } else {
@@ -248,7 +278,7 @@ export default {
         api.project.update({ data }).then((res) => {
           if (res.data.success) {
             this.$Message.success(this.$t('p.new.form.success.update'))
-            this.$store.commit('mock/SET_REQUEST_PARAMS', {pageIndex: 1})
+            this.$store.commit('mock/SET_REQUEST_PARAMS', { pageIndex: 1 })
             this.$store.dispatch('mock/FETCH', this.$route)
           }
         })

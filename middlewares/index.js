@@ -9,10 +9,10 @@ const blackIPs = config.get('blackList.ips')
 
 const codeMap = {
   '-1': 'fail',
-  '200': 'success',
-  '401': 'token expired',
-  '500': 'server error',
-  '10001': 'params error'
+  200: 'success',
+  401: 'token expired',
+  500: 'server error',
+  10001: 'params error'
 }
 
 const utilFn = {
@@ -42,7 +42,7 @@ module.exports = class Middleware {
   }
 
   static ipFilter (ctx, next) {
-    if (ipFilter(ctx.ip, blackIPs, {strict: false})) {
+    if (ipFilter(ctx.ip, blackIPs, { strict: false })) {
       ctx.body = utilFn.refail('请求频率太快，已被限制访问')
       return
     }

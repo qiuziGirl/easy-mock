@@ -272,25 +272,25 @@ module.exports = class MockController {
 
       /* istanbul ignore else */
       if (apiData._res) { // 自定义响应 Code
-        let _res = apiData._res
+        const _res = apiData._res
         ctx.status = _res.status || /* istanbul ignore next */ 200
         /* istanbul ignore else */
         if (_res.cookies) {
-          for (let i in _res.cookies) {
+          for (const i in _res.cookies) {
             /* istanbul ignore else */
             if (_res.cookies.hasOwnProperty(i)) ctx.cookies.set(i, _res.cookies[i])
           }
         }
         /* istanbul ignore next */
         if (_res.headers) {
-          for (let i in _res.headers) {
+          for (const i in _res.headers) {
             /* istanbul ignore next */
             if (_res.headers.hasOwnProperty(i)) ctx.set(i, _res.headers[i])
           }
         }
         /* istanbul ignore next */
         if (_res.status && parseInt(_res.status, 10) !== 200 && _res.data) apiData = _res.data
-        delete apiData['_res']
+        delete apiData._res
       }
     }
 

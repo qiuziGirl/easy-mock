@@ -25,7 +25,7 @@ async function createMock (projectId, swaggerDocs) {
     'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'
   ]
 
-  for (let url in paths) {
+  for (const url in paths) {
     const fullAPIPath = path.posix.join(basePath, url)
     for (let method in paths[url]) {
       method = method.toLowerCase()
@@ -38,7 +38,7 @@ async function createMock (projectId, swaggerDocs) {
       const mode = _.get(operation, 'responses["200"].example') || _.get(operation, 'responses["default"].example') || '{}'
       let responseModel, parameters
 
-      for (let code in operation.responses) {
+      for (const code in operation.responses) {
         const response = operation.responses[code]
         response.example = response.example ? Mock.mock(JSON.parse(response.example)) : ''
       }

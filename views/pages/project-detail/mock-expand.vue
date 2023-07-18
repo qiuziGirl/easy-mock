@@ -1,25 +1,25 @@
 <template>
   <div class="em-mock-expand">
     <h2>Method</h2>
-    <p>{{mock.method}}</p>
+    <p>{{ mock.method }}</p>
     <h2>URL</h2>
-    <p>{{mock.url}}</p>
-    <h2>{{$t('p.detail.expand.description')}}</h2>
-    <p>{{mock.description}}</p>
-    <Tabs value="request" v-if="mock.parameters || mock.response_model">
-      <Tab-pane :label="$t('p.detail.expand.tab[0]')" name="request" v-if="mock.parameters">
-        <Table :columns="columnsRequest" :data="request"></Table>
+    <p>{{ mock.url }}</p>
+    <h2>{{ $t('p.detail.expand.description') }}</h2>
+    <p>{{ mock.description }}</p>
+    <Tabs v-if="mock.parameters || mock.response_model" value="request">
+      <Tab-pane v-if="mock.parameters" :label="$t('p.detail.expand.tab[0]')" name="request">
+        <Table :columns="columnsRequest" :data="request" />
       </Tab-pane>
-      <Tab-pane :label="$t('p.detail.expand.tab[1]')" name="response" v-if="mock.response_model">
-        <Table :columns="columnsResponse" :data="response"></Table>
+      <Tab-pane v-if="mock.response_model" :label="$t('p.detail.expand.tab[1]')" name="response">
+        <Table :columns="columnsResponse" :data="response" />
       </Tab-pane>
-      <Tab-pane label="Class Model" name="class" v-if="mock.response_model && entities.js.length">
+      <Tab-pane v-if="mock.response_model && entities.js.length" label="Class Model" name="class">
         <Collapse>
           <Panel>
             JavaScript
             <div slot="content">
               <p v-for="(item, i) in entities.js" :key="i">
-                <pre>{{item}}</pre>
+                <pre>{{ item }}</pre>
               </p>
             </div>
           </Panel>
@@ -27,7 +27,7 @@
             Objective-C
             <div slot="content">
               <p v-for="(item, i) in entities.oc" :key="i">
-                <pre>{{item}}</pre>
+                <pre>{{ item }}</pre>
               </p>
             </div>
           </Panel>

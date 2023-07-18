@@ -41,7 +41,7 @@ const i18n = new VueI18n({
       ...zhLocaleIView,
       ...zhLocale
     },
-    'en': {
+    en: {
       ...enLocaleIView,
       ...enLocale
     }
@@ -50,7 +50,7 @@ const i18n = new VueI18n({
 
 Vue.use(iView, {
   i18n: function (path, options) {
-    let value = i18n.t(path, options)
+    const value = i18n.t(path, options)
     if (value !== null && value !== undefined) return value
     return ''
   }

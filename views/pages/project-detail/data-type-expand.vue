@@ -1,6 +1,6 @@
 <template>
   <div class="em-data-type-expand">
-    <p><pre>{{data}}</pre></p>
+    <p><pre>{{ data }}</pre></p>
   </div>
 </template>
 

@@ -44,12 +44,15 @@ module.exports = class LDAPUtil {
       }
     })
   }
+
   static closeClient (client) {
     client.destroy()
   }
+
   static get enable () {
     return !!ldapConf.server
   }
+
   static async authenticate (username, password, client) {
     return new Promise((resolve, reject) => {
       if (!client) return reject(new Error('LDAP connection is not yet bound'))

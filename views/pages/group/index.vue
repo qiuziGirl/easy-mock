@@ -1,76 +1,94 @@
 <template>
   <div class="em-group">
-    <em-add icon="person-add" color="red" :bottom="90"
-      @click.native="openModal"></em-add>
-    <div v-shortkey="['ctrl', 'c']" @shortkey="openModal"></div>
-    <em-keyboard-short v-model="keyboards"></em-keyboard-short>
+    <em-add
+      icon="person-add"
+      color="red"
+      :bottom="90"
+      @click.native="openModal"
+    />
+    <div v-shortkey="['ctrl', 'c']" @shortkey="openModal" />
+    <em-keyboard-short v-model="keyboards" />
     <Modal
-      class-name="em-group-modal"
       v-model="modalShow"
+      class-name="em-group-modal"
+      :closable="false"
       @on-ok="submit"
-      :closable="false">
+    >
       <Tabs v-model="tabName">
         <Tab-pane
           :label="$tc('p.group.modal.tab.create', 0)"
-          name="create" :disabled="tabName === 'rename'">
+          name="create"
+          :disabled="tabName === 'rename'"
+        >
           <Form :label-width="64" @submit.native.prevent>
             <Form-item :label="$tc('p.group.modal.tab.create', 1)">
               <i-input
+                ref="inputCreate"
                 v-model="groupName"
                 :placeholder="$tc('p.group.modal.tab.create', 2)"
                 @on-enter="submit"
-                ref="inputCreate"></i-input>
+              />
             </Form-item>
           </Form>
         </Tab-pane>
         <Tab-pane
           :label="$tc('p.group.modal.tab.join', 0)"
-          name="join" :disabled="tabName === 'rename'">
+          name="join"
+          :disabled="tabName === 'rename'"
+        >
           <Form :label-width="64" @submit.native.prevent>
             <Form-item :label="$tc('p.group.modal.tab.join', 1)">
               <i-input
                 v-model="groupName"
+                :placeholder="$tc('p.group.modal.tab.join', 2)"
                 @on-enter="submit"
-                :placeholder="$tc('p.group.modal.tab.join', 2)"></i-input>
+              />
             </Form-item>
           </Form>
         </Tab-pane>
         <Tab-pane
           :label="$tc('p.group.modal.tab.edit', 0)"
-          name="rename" :disabled="tabName !== 'rename'">
+          name="rename"
+          :disabled="tabName !== 'rename'"
+        >
           <Form :label-width="64" @submit.native.prevent>
             <Form-item :label="$tc('p.group.modal.tab.edit', 1)">
               <i-input
                 v-model="groupName"
+                :placeholder="$tc('p.group.modal.tab.edit', 2)"
                 @on-enter="submit"
-                :placeholder="$tc('p.group.modal.tab.edit', 2)"></i-input>
+              />
             </Form-item>
           </Form>
         </Tab-pane>
       </Tabs>
     </Modal>
     <em-placeholder :show="groups.length === 0">
-      <Icon :type="keywords ? 'outlet' : 'happy-outline'"></Icon>
-      <p>{{keywords ? $tc('p.group.placeholder', 1) : $tc('p.group.placeholder', 2)}}</p>
+      <Icon :type="keywords ? 'outlet' : 'happy-outline'" />
+      <p>{{ keywords ? $tc('p.group.placeholder', 1) : $tc('p.group.placeholder', 2) }}</p>
     </em-placeholder>
     <em-header
       icon="person-stalker"
       :title="$t('p.group.header.title')"
-      :description="$t('p.group.header.description')">
-    </em-header>
+      :description="$t('p.group.header.description')"
+    />
     <transition name="fade">
-      <div class="em-container em-group__list" v-show="pageAnimated">
+      <div v-show="pageAnimated" class="em-container em-group__list">
         <div class="ivu-row">
           <transition-group name="fadeUp">
-            <div class="ivu-col ivu-col-span-6"
-                v-for="item in groups" :key="item._id">
+            <div
+              v-for="item in groups"
+              :key="item._id"
+              class="ivu-col ivu-col-span-6"
+            >
               <div
                 class="em-group__item"
-                @click="$router.push(`/group/${item._id}?name=${item.name}`)">
-                <h2>{{item.name}}</h2>
+                @click="$router.push(`/group/${item._id}?name=${item.name}`)"
+              >
+                <h2>{{ item.name }}</h2>
                 <Button-group class="group-control">
-                  <Button type="ghost" icon="edit" @click.stop="rename(item)"></Button>
-                  <Button type="ghost" icon="trash-b" @click.stop="remove(item)"></Button>
+                  <Button type="ghost" icon="edit" @click.stop="rename(item)" />
+                  <Button type="ghost" icon="trash-b" @click.stop="remove(item)" />
                 </Button-group>
               </div>
             </div>
@@ -81,15 +99,14 @@
   </div>
 </template>
 
-<style>
-@import './index.css';
-</style>
-
 <script>
 import debounce from 'lodash/debounce'
 
 export default {
-  name: 'group',
+  name: 'Group',
+  asyncData ({ store }) {
+    return store.dispatch('group/FETCH')
+  },
   data () {
     return {
       groupName: '',
@@ -110,14 +127,6 @@ export default {
       ]
     }
   },
-  asyncData ({ store }) {
-    return store.dispatch('group/FETCH')
-  },
-  mounted () {
-    this.$on('query', debounce((keywords) => {
-      this.keywords = keywords
-    }, 500))
-  },
   computed: {
     groups () {
       const list = this.$store.state.group.list
@@ -126,6 +135,11 @@ export default {
         ? list.filter(item => new RegExp(keywords, 'i').test(item.name))
         : list
     }
+  },
+  mounted () {
+    this.$on('query', debounce((keywords) => {
+      this.keywords = keywords
+    }, 500))
   },
   methods: {
     openModal () {
@@ -145,9 +159,9 @@ export default {
       } else if (this.tabName === 'join') {
         this.$store.dispatch('group/JOIN', this.groupName).then(body => {
           if (body.success) {
-            this.$Message.success(this.$t('p.group.join.success', {groupName: this.groupName}))
+            this.$Message.success(this.$t('p.group.join.success', { groupName: this.groupName }))
           } else {
-            this.$Message.warning(this.$t('p.group.join.warning', {groupName: this.groupName}))
+            this.$Message.warning(this.$t('p.group.join.warning', { groupName: this.groupName }))
           }
         })
       } else {
@@ -181,3 +195,7 @@ export default {
   }
 }
 </script>
+
+<style>
+@import './index.css';
+</style>

@@ -1,6 +1,8 @@
 <template>
   <transition name="fade">
-    <p v-show="pageAnimated" style="padding: 20px;">{{$t('c.logOut.text')}}</p>
+    <p v-show="pageAnimated" style="padding: 20px;">
+      {{ $t('c.logOut.text') }}
+    </p>
   </transition>
 </template>
 
